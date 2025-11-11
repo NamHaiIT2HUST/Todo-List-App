@@ -10,35 +10,35 @@ Một ứng dụng Quản lý Công việc (Todo List) được xây dựng bằ
 
   * Thêm công việc mới với Tiêu đề, Mô tả.
 
-** Sửa (Update) nội dung của công việc.
+  * Sửa (Update) nội dung của công việc.
 
-** Xoá (Delete) từng công việc hoặc xoá tất cả.
+  * Xoá (Delete) từng công việc hoặc xoá tất cả.
 
 * Quản lý Thời gian:
 
-** Đặt Thời gian Bắt đầu (Start Time) và Thời gian Kết thúc (End Time) cho mỗi công việc.
+  * Đặt Thời gian Bắt đầu (Start Time) và Thời gian Kết thúc (End Time) cho mỗi công việc.
 
 * Theo dõi Trạng thái:
 
-** Đánh dấu công việc là "Hoàn thành" (màu xanh lá) hoặc "Chưa hoàn thành" (màu đỏ).
+  * Đánh dấu công việc là "Hoàn thành" (màu xanh lá) hoặc "Chưa hoàn thành" (màu đỏ).
 
-** Hiển thị hộp thoại xác nhận ("Bạn chắc chắn đã hoàn thành...?") khi thay đổi trạng thái.
+  * Hiển thị hộp thoại xác nhận ("Bạn chắc chắn đã hoàn thành...?") khi thay đổi trạng thái.
 
 * Thống kê Trực quan:
 
-** Tích hợp Chart.js để vẽ biểu đồ tròn (Pie Chart) thời gian thực.
+  * Tích hợp Chart.js để vẽ biểu đồ tròn (Pie Chart) thời gian thực.
 
-** Biểu đồ tự động cập nhật, hiển thị tỷ lệ công việc đã hoàn thành so với chưa hoàn thành.
+  * Biểu đồ tự động cập nhật, hiển thị tỷ lệ công việc đã hoàn thành so với chưa hoàn thành.
 
 * Lưu trữ Dữ liệu:
 
-** Sử dụng LocalStorage của trình duyệt để lưu trữ toàn bộ danh sách công việc.
+  * Sử dụng LocalStorage của trình duyệt để lưu trữ toàn bộ danh sách công việc.
 
 * Giao diện Đáp ứng (Responsive):
 
-** Tự động thay đổi ảnh nền (background image) khác nhau cho thiết bị desktop và mobile.
+  * Tự động thay đổi ảnh nền (background image) khác nhau cho thiết bị desktop và mobile.
 
-** Bảng (table) danh sách công việc tự động cuộn ngang trên màn hình điện thoại để tránh vỡ giao diện.
+  * Bảng (table) danh sách công việc tự động cuộn ngang trên màn hình điện thoại để tránh vỡ giao diện.
 
 ## Công nghệ sử dụng
 
