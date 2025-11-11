@@ -8,7 +8,7 @@ Một ứng dụng Quản lý Công việc (Todo List) được xây dựng bằ
 
 * Quản lý Công việc (CRUD):
 
-** Thêm công việc mới với Tiêu đề, Mô tả.
+  * Thêm công việc mới với Tiêu đề, Mô tả.
 
 ** Sửa (Update) nội dung của công việc.
 
@@ -57,7 +57,7 @@ Một ứng dụng Quản lý Công việc (Todo List) được xây dựng bằ
 1. Clone repository này về máy của bạn:
 
 ```
-git clone [https://github.com/NamHaiIT2HUST/Todo-List-App.git](https://github.com/NamHaiIT2HUST/Todo-List-App.git)
+git clone [https://github.com/NamHaiIT2HUST/Todo-List-App.git]
 ```
 
 2. Đi tới thư mục project:
