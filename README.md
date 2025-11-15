@@ -125,7 +125,7 @@ Nếu có lỗi hoặc cần tính năng mới, hãy mở Issue trong repo.
 ---
 
 ## 📄 License
-Dự án thuộc sở hữu của bạn.  
+Dự án thuộc sở hữu của Nguyễn Đào Nam Hải.  
 
 ---
 
