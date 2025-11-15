@@ -1,69 +1,134 @@
-# Todo List App (Ứng dụng Quản lý Công việc)
+# 📝 Todo List App – Phiên bản Nâng Cấp (SQL.js + Chart.js + Archive)
 
-Một ứng dụng Quản lý Công việc (Todo List) được xây dựng bằng HTML, CSS và JavaScript thuần, cho phép người dùng theo dõi, quản lý và thống kê các công việc hằng ngày.
+**Todo List App** — ứng dụng quản lý công việc chạy hoàn toàn trên trình duyệt. Phiên bản này sử dụng **SQL.js** (SQLite chạy bằng WebAssembly) nhằm giả lập cơ sở dữ liệu SQLite ngay trong browser và **Chart.js** để hiển thị thống kê trực quan. Ứng dụng hỗ trợ CRUD, đánh dấu hoàn thành, cảnh báo deadline, lưu trữ (archive), tìm kiếm real-time và biểu đồ tiến độ.
 
-Ứng dụng sử dụng LocalStorage để lưu trữ dữ liệu trực tiếp trên trình duyệt, đảm bảo công việc không bị mất khi tải lại trang.
+**🔗 Demo:** https://namhaiit2hust.github.io/Todo-List-App/  
+**📦 Source:** https://github.com/NamHaiIT2HUST/Todo-List-App
 
-## Tính năng chính
+---
 
-* Quản lý Công việc (CRUD):
+## 🚀 Tính năng chính
 
-  * Thêm công việc mới với Tiêu đề, Mô tả.
+### ✔️ Quản lý công việc (CRUD)
+- Thêm công việc: **Tiêu đề**, **Mô tả**, **Ưu tiên**, **Thời gian bắt đầu**, **Thời gian kết thúc**
+- Chỉnh sửa công việc trực tiếp
+- Xóa từng công việc hoặc xóa toàn bộ công việc chưa archive
 
-  * Sửa (Update) nội dung của công việc.
+### 🎯 Ưu tiên (Priority)
+- **High** – Đỏ  
+- **Medium** – Vàng  
+- **Low** – Xanh  
 
-  * Xoá (Delete) từng công việc hoặc xoá tất cả.
+### 🕒 Trạng thái & deadline
+- Click vào **tiêu đề** để đánh dấu hoàn thành / chưa hoàn thành
+- Hộp thoại xác nhận trước khi chuyển trạng thái
+- Công việc sắp đến hạn (< 1 ngày) và chưa hoàn thành → tô vàng (deadline-warning)
 
-* Quản lý Thời gian:
+### 📦 Lưu trữ (Archive)
+- Công việc đã hoàn thành sẽ hiển thị nút **Archive**
+- Có thể **Restore** hoặc **Delete** trong trang Archive
+- Danh sách được chia làm:
+  - **Current Tasks**
+  - **Archived Tasks**
 
-  * Đặt Thời gian Bắt đầu (Start Time) và Thời gian Kết thúc (End Time) cho mỗi công việc.
+### 🔍 Tìm kiếm
+- Tìm kiếm theo **Tiêu đề** (real-time)
 
-* Theo dõi Trạng thái:
+### 📊 Thống kê (Chart.js)
+- **Pie chart:** Tỷ lệ công việc đã hoàn thành vs chưa hoàn thành  
+- **Bar chart:** Thống kê số công việc hoàn thành trong **7 ngày gần nhất**  
 
-  * Đánh dấu công việc là "Hoàn thành" (màu xanh lá) hoặc "Chưa hoàn thành" (màu đỏ).
+### 🎨 Giao diện & trải nghiệm
+- Dùng **Bootstrap 5**
+- Avatar trợ lý hai bên màn hình + hiệu ứng vẫy tay
+- Bong bóng thoại hướng dẫn sử dụng
+- Thay nền **desktop vs mobile**
+- Ẩn helper avatar tự động trên màn hình nhỏ
 
-  * Hiển thị hộp thoại xác nhận ("Bạn chắc chắn đã hoàn thành...?") khi thay đổi trạng thái.
+---
 
-* Thống kê Trực quan:
+## 🛠️ Công nghệ sử dụng
+- **HTML5**
+- **CSS3 + Bootstrap 5**
+- **JavaScript ES6 Modules**
+- **SQL.js (SQLite trong trình duyệt)**
+- **Chart.js**
+- **Boxicons**
 
-  * Tích hợp Chart.js để vẽ biểu đồ tròn (Pie Chart) thời gian thực.
+---
 
-  * Biểu đồ tự động cập nhật, hiển thị tỷ lệ công việc đã hoàn thành so với chưa hoàn thành.
-
-* Lưu trữ Dữ liệu:
-
-  * Sử dụng LocalStorage của trình duyệt để lưu trữ toàn bộ danh sách công việc.
-
-* Giao diện Đáp ứng (Responsive):
-
-  * Tự động thay đổi ảnh nền (background image) khác nhau cho thiết bị desktop và mobile.
-
-  * Bảng (table) danh sách công việc tự động cuộn ngang trên màn hình điện thoại để tránh vỡ giao diện.
-
-## Công nghệ sử dụng
-
-* HTML5
-
-* CSS3 (với Bootstrap 5 để tạo giao diện nhanh)
-
-* JavaScript (ES6+) (Xử lý toàn bộ logic)
-
-* Chart.js (Thư viện vẽ biểu đồ)
-
-* LocalStorage (Lưu trữ phía client)
-
-## Cách chạy 
-
-1. Clone repository này về máy của bạn:
-
-```
-git clone [https://github.com/NamHaiIT2HUST/Todo-List-App.git]
-```
-
-2. Đi tới thư mục project:
+## 📁 Cấu trúc dự án
 
 ```
-cd Todo-List-App
+Todo-List-App/
+├── index.html
+├── style.css
+├── main.js
+├── db.js
+└── image/
+    ├── laptop_background.jpg
+    ├── mobile_background.jpg
+    ├── my_profile_avatar.png
+    └── my_profile_avatar_2.jpg
 ```
 
-3. Mở file index.html bằng trình duyệt của bạn để bắt đầu sử dụng.
+---
+
+## ▶️ Cách chạy
+
+### (1) Mở trực tiếp
+1. Clone project:
+```bash
+git clone https://github.com/NamHaiIT2HUST/Todo-List-App.git
+```
+2. Mở file:
+```
+index.html
+```
+
+### (2) Chạy bằng local server (khuyến nghị)
+```bash
+npm install -g http-server
+http-server .
+```
+Hoặc dùng **Live Server (VSCode)**.
+
+Truy cập:
+```
+http://localhost:8080
+```
+
+---
+
+## 💾 Lưu trữ dữ liệu (SQL.js)
+SQL.js chạy toàn bộ database SQLite **trong RAM**, do đó:
+
+- ❗ **Dữ liệu sẽ mất sau khi reload hoặc đóng tab**
+- ✔️ Không phụ thuộc LocalStorage
+- ✔️ Mọi query chạy giống SQLite thật
+
+---
+
+## 📌 Roadmap tương lai
+- [ ] Lưu database vào IndexedDB  
+- [ ] Bộ lọc nâng cao (priority / status / thời gian)  
+- [ ] Xuất báo cáo PDF  
+- [ ] Backend API để đồng bộ đa thiết bị  
+- [ ] Dark mode  
+
+---
+
+## 🤝 Đóng góp
+PRs luôn được hoan nghênh.  
+Nếu có lỗi hoặc cần tính năng mới, hãy mở Issue trong repo.
+
+---
+
+## 📄 License
+Dự án thuộc sở hữu của bạn.  
+
+---
+
+## ❤️ Lời cảm ơn
+Cảm ơn bạn đã sử dụng **Todo List App**!  
+Chúc bạn một ngày thật vui vẻ & hiệu quả! 🌱💪
