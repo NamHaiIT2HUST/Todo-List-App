@@ -1,6 +1,5 @@
 import * as db from './db.js';
 
-// DOM Elements
 const todoForm = document.getElementById("todoForm");
 const titleEl = document.getElementById("title");
 const descEl = document.getElementById("description");
@@ -22,21 +21,17 @@ const archiveSection = document.getElementById("archiveSection");
 const toggleStatsBtn = document.getElementById("toggleStatsBtn");
 const statisticsSection = document.getElementById("statisticsSection");
 
-// Biến toàn cục
 let overviewChartInstance = null; 
 let dailyChartInstance = null; 
-let todoEditingId = null; // Lưu ID đang sửa (null nếu là thêm mới)
+let todoEditingId = null; 
 
-// --- MAIN LOGIC ---
-
-// 1. Khởi chạy App
+//Khởi chạy App
 async function main() {
     await db.initDatabase(); 
     await renderAll();      
 }
 main();
 
-// 2. Xử lý Submit Form (Thêm hoặc Sửa)
 todoForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -44,11 +39,10 @@ todoForm.addEventListener("submit", async (e) => {
         title: titleEl.value.trim(),
         description: descEl.value.trim(),
         priority: priorityEl.value,
-        startTime: startEl.value, // Giá trị từ input datetime-local
+        startTime: startEl.value,
         endTime: endEl.value,
     };
 
-    // Validation
     if (!todoData.title) { 
         alert("Vui lòng nhập tiêu đề công việc!");
         titleEl.focus();
@@ -64,15 +58,13 @@ todoForm.addEventListener("submit", async (e) => {
 
     try {
         if (todoEditingId) {
-            // Logic Update
             db.updateTask(todoEditingId, todoData);
             alert("Cập nhật thành công!");
         } else {
-            // Logic Add New
             db.addTask(todoData);
         }
 
-        resetForm(); // Reset form sau khi lưu
+        resetForm(); 
         await renderAll();
 
     } catch (err) {
@@ -80,7 +72,6 @@ todoForm.addEventListener("submit", async (e) => {
     }
 });
 
-// 3. Reset Form
 function resetForm() {
     todoForm.reset();
     priorityEl.value = "medium"; 
@@ -91,31 +82,24 @@ function resetForm() {
 }
 btnReset.addEventListener("click", resetForm);
 
-// 4. Render Tất Cả (Trung tâm điều khiển hiển thị)
 async function renderAll() {
     const allTasks = db.getAllTasks();
     const searchTerm = searchInput.value.toLowerCase();
 
-    // Lọc theo search input cho cả 2 danh sách
     const filteredTasks = allTasks.filter(t => t.title.toLowerCase().includes(searchTerm));
 
-    // Tách mảng
     const currentTasks = filteredTasks.filter(task => task.is_archived === 0);
     const archivedTasks = filteredTasks.filter(task => task.is_archived === 1);
-    
-    // Render HTML
+
     renderTable(currentTasks, tbody, false);
     renderTable(archivedTasks, archiveTbody, true);
 
-    // Render Chart (Dùng dữ liệu gốc chưa filter search để thống kê chính xác)
     renderOverviewChart(allTasks.filter(t => t.is_archived === 0));
     renderDailyChart(allTasks); 
 }
 
-// Input tìm kiếm (Real-time)
 searchInput.addEventListener("input", renderAll);
 
-// 5. Hàm Render Table dùng chung (Cho cả Current và Archive)
 function renderTable(tasks, container, isArchiveView) {
     if (tasks.length === 0) {
         container.innerHTML = `<tr><td colspan="7" class="text-muted py-4">Không tìm thấy công việc nào...</td></tr>`;
@@ -123,25 +107,21 @@ function renderTable(tasks, container, isArchiveView) {
     }
 
     const html = tasks.map((item, index) => {
-        // Format ngày tháng đẹp
         const formatTime = (isoString) => isoString ? new Date(isoString).toLocaleString('vi-VN', { hour: '2-digit', minute:'2-digit', day:'2-digit', month:'2-digit' }) : '---';
         
         const statusClass = item.status === 1 ? 'completed' : 'pending';
         const statusIcon = item.status === 1 ? 'bx-check-circle' : 'bx-circle';
         const priorityHtml = getPriorityBadge(item.priority);
-
-        // Logic Deadline Warning
+        
         let deadlineClass = '';
         if (item.endTime && item.status === 0) {
             const now = new Date();
             const end = new Date(item.endTime);
-            // Cảnh báo nếu còn dưới 24h và chưa quá hạn
             if (end > now && (end - now) < 24 * 60 * 60 * 1000) {
                 deadlineClass = 'deadline-warning';
             }
         }
 
-        // Nút bấm tùy ngữ cảnh
         let actionButtons = '';
         if (isArchiveView) {
             actionButtons = `
@@ -185,9 +165,6 @@ function renderTable(tasks, container, isArchiveView) {
     container.innerHTML = html;
 }
 
-// 6. Global Actions (Gắn vào window để HTML gọi được)
-
-// Đổi trạng thái Hoàn thành/Chưa
 window.toggleStatus = async (id) => {
     const task = db.getTaskById(id);
     if (!task) return;
@@ -199,55 +176,45 @@ window.toggleStatus = async (id) => {
     await renderAll();
 };
 
-// Chuẩn bị cập nhật (Đổ dữ liệu lên form)
 window.prepareUpdate = (id) => {
     const task = db.getTaskById(id);
     if (!task) return;
 
-    todoEditingId = id; // Gán ID đang sửa
+    todoEditingId = id; 
     
     titleEl.value = task.title;
     descEl.value = task.description;
     priorityEl.value = task.priority;
 
-    // FIX LỖI DATE: Input datetime-local cần định dạng "YYYY-MM-DDTHH:mm"
-    // Nếu trong DB lưu ISO String có giây hoặc múi giờ (Z), ta phải cắt bỏ
     if(task.startTime) startEl.value = task.startTime.substring(0, 16);
     if(task.endTime) endEl.value = task.endTime.substring(0, 16);
-    
-    // Đổi giao diện nút
+
     btnAdd.innerText = "Update";
     btnAdd.classList.remove("btn-primary");
     btnAdd.classList.add("btn-warning");
-    
-    // Cuộn lên form
+
     titleEl.focus();
     todoForm.scrollIntoView({ behavior: 'smooth' });
 };
 
-// Xóa
 window.removeTodo = async (id) => {
     if (confirm("Bạn có chắc chắn muốn xóa vĩnh viễn?")) {
         db.deleteTask(id);
-        // Nếu đang sửa chính task bị xóa thì reset form
         if (todoEditingId === id) resetForm();
         await renderAll();
     }
 };
 
-// Lưu trữ
 window.archiveTodo = async (id) => {
     db.archiveTask(id);
     await renderAll();
 };
 
-// Khôi phục
 window.restoreTodo = async (id) => {
     db.restoreTask(id);
     await renderAll();
 };
 
-// Xóa tất cả task hiện tại
 btnRemoveAll.addEventListener("click", async () => {
     if (confirm("Cảnh báo: Bạn muốn xóa TẤT CẢ công việc đang có? (Không xóa Archive)")) {
         db.deleteAllCurrentTasks();
@@ -255,8 +222,6 @@ btnRemoveAll.addEventListener("click", async () => {
     }
 });
 
-
-// 7. Helpers & UI Logic
 function getPriorityBadge(priority) {
     const map = {
         'high': '<span class="priority-badge priority-high">High</span>',
@@ -266,7 +231,6 @@ function getPriorityBadge(priority) {
     return map[priority] || map['medium'];
 }
 
-// Toggle Views
 toggleArchiveBtn.addEventListener("click", () => {
     if (archiveSection.style.display === 'none') {
         archiveSection.style.display = 'block';
@@ -294,7 +258,6 @@ toggleStatsBtn.addEventListener("click", () => {
     }
 });
 
-// 8. Charts Logic
 function renderOverviewChart(tasks) {
     if (!document.getElementById('overviewChart')) return;
     
@@ -335,11 +298,10 @@ function renderDailyChart(allTasks) {
     for (let i = days - 1; i >= 0; i--) {
         const d = new Date();
         d.setDate(d.getDate() - i);
-        const dateStr = d.toISOString().split('T')[0]; // YYYY-MM-DD
+        const dateStr = d.toISOString().split('T')[0]; 
         
         labels.push(d.toLocaleDateString('vi-VN', {day: '2-digit', month: '2-digit'}));
-        
-        // Đếm số task hoàn thành trong ngày này
+
         const count = allTasks.filter(t => {
             return t.status === 1 && t.completedAt && t.completedAt.startsWith(dateStr);
         }).length;
