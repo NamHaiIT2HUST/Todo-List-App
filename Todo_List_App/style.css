@@ -1,239 +1,321 @@
-#todoForm {
-    width: 100%;
-    padding: 24px;
-    border: 1px solid #bbb;
-    border-radius: 8px;
-    margin: 40px auto;
-}
+/* =========================================
+   1. CÀI ĐẶT CHUNG & MÀU SẮC GALAXY
+========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-.group-btn {
-    text-align: center;
-}
-
-button {
-    min-width: 100px;
-    border: none;
-}
-
-.completed {
-    color: green; 
-    cursor: pointer;
-}
-
-.pending {
-    color: crimson; 
-    cursor: pointer;
-}
-
-.icon {
-    line-height: 100%;
-    height: 100%;
+:root {
+    /* Gradient tím hồng chủ đạo */
+    --primary-gradient: linear-gradient(135deg, #b06ab3 0%, #4568dc 100%);
+    --accent-color: #d18ce0; /* Màu điểm nhấn sáng */
+    
+    /* Màu kính tối (Dark Glass) */
+    --glass-bg: rgba(20, 20, 35, 0.6); 
+    --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+    --glass-card-bg: rgba(255, 255, 255, 0.08); /* Màu nền thẻ bài */
+    --input-bg: rgba(0, 0, 0, 0.3);
+    
+    --text-main: #ffffff;
+    --text-muted: #b0b0d0;
+    
+    --box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 }
 
 body {
-    background-image: url('image/laptop_background.jpg'); 
-    min-height: 100vh; 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed; 
-    background-color: #f0f2f5; 
+    font-family: 'Poppins', sans-serif;
+    /* Nền vũ trụ tím thẫm */
+    background: linear-gradient(120deg, #2b1055, #7597de);
+    min-height: 100vh;
+    background-size: 200% 200%; /* Để tạo hiệu ứng chuyển động nếu muốn */
+    background-attachment: fixed;
+    color: var(--text-main);
     padding-bottom: 50px;
 }
 
+/* =========================================
+   2. KHUNG CHÍNH (DARK GLASS CONTAINER)
+========================================= */
 .container {
-    background-color: rgba(255, 255, 255, 0.95); /* Tăng độ đậm nền để không bị lóa khi đè lên ảnh */
-    padding: 30px; /* Tăng padding chút cho đẹp */
-    border-radius: 15px; /* Bo tròn mềm mại hơn */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    margin-top: 40px; 
-    margin-bottom: 40px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px); /* Mờ mạnh hơn cho nền tối */
+    -webkit-backdrop-filter: blur(16px);
+    border: var(--glass-border);
+    box-shadow: var(--box-shadow);
+    
+    padding: 40px;
+    border-radius: 24px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    
     position: relative; 
-    z-index: 100;       
-    max-width: 900px;  
+    z-index: 100;
+    max-width: 950px;
+    
+    animation: fadeInUp 0.8s ease-out;
 }
 
-@media (max-width: 768px) {
-    body {
-        background-image: url('image/mobile_background.jpg'); 
-        background-attachment: scroll; 
-    }
+h1, h3 {
+    font-weight: 700;
+    /* Chữ phát sáng nhẹ */
+    text-shadow: 0 0 10px rgba(176, 106, 179, 0.5); 
+    color: #fff;
+    margin-bottom: 20px;
 }
 
-.priority-high {
-    background-color: #dc3545;
-    color: white;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 0.9em;
-    font-weight: 500;
-}
-.priority-medium {
-    background-color: #ffc107;
-    color: black;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 0.9em;
-    font-weight: 500;
-}
-.priority-low {
-    background-color: #0d6efd;
-    color: white;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 0.9em;
-    font-weight: 500;
+h1 {
+    /* Gradient text nổi bật trên nền tối */
+    background: linear-gradient(to right, #fff, #d18ce0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
+/* =========================================
+   3. FORM & INPUTS (GIAO DIỆN TỐI)
+========================================= */
+#todoForm {
+    padding: 30px;
+    border: var(--glass-border);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+label {
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.form-control, .form-select {
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 15px;
+    font-size: 14px;
+    background: var(--input-bg); /* Nền input tối */
+    color: #fff; /* Chữ trắng khi nhập */
+    transition: all 0.3s;
+}
+
+/* Placeholder màu xám nhạt */
+.form-control::placeholder { color: rgba(255, 255, 255, 0.4); }
+
+.form-control:focus, .form-select:focus {
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.4);
+    border-color: #a270b5;
+    color: #fff;
+}
+
+/* Icon lịch trong input date cũng phải chuyển sang trắng */
+input[type="datetime-local"] {
+    color-scheme: dark;
+}
+
+/* =========================================
+   4. BUTTONS (NÚT NEON)
+========================================= */
+.btn {
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 12px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(176, 106, 179, 0.6); /* Hiệu ứng phát sáng khi hover */
+}
+
+.btn-primary, #add-btn { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white; 
+}
+.btn-secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; }
+.btn-danger { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; }
+.btn-warning { background: linear-gradient(135deg, #f7971e, #ffd200); color: #000 !important; }
+.btn-info { background: linear-gradient(135deg, #00c6ff, #0072ff); color: white; }
+.btn-success { background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff; }
+
+.btn-sm { padding: 6px 12px; font-size: 11px; }
+.group-btn { text-align: center; margin-top: 20px; }
+
+/* Nút outline (Xem thống kê / Archive) */
+.btn-outline-primary, .btn-outline-success {
+    border: 2px solid rgba(255,255,255,0.3) !important;
+    color: #fff !important;
+    background: transparent !important;
+}
+.btn-outline-primary:hover, .btn-outline-success:hover {
+    background: white !important;
+    color: #333 !important;
+    border-color: white !important;
+}
+
+/* =========================================
+   5. BẢNG DẠNG THẺ (CARD LIST)
+========================================= */
+.custom-table {
+    border-spacing: 0 15px;
+    width: 100%;
+}
+
+.custom-table thead th {
+    border: none;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+/* Thẻ công việc nền tối trong suốt */
+.custom-table tbody tr {
+    background: var(--glass-card-bg);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.custom-table tbody tr:hover {
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.12); /* Sáng hơn chút khi hover */
+    box-shadow: 0 0 15px rgba(118, 75, 162, 0.3);
+}
+
+.custom-table td {
+    border: none !important;
+    padding: 20px 15px;
+    vertical-align: middle;
+    color: var(--text-main);
+}
+
+.custom-table tbody tr td:first-child { border-radius: 16px 0 0 16px; }
+.custom-table tbody tr td:last-child { border-radius: 0 16px 16px 0; }
+
+/* Text nhỏ (ngày tháng) */
+.text-muted { color: #8f8fbf !important; }
+
+/* Tiêu đề & Trạng thái */
+.task-title-wrapper {
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.task-icon { font-size: 1.5rem; color: var(--accent-color); }
+
+.completed {
+    color: #00ff9d; /* Xanh neon */
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+.completed .task-icon { color: #00ff9d; }
+
+.pending { color: #fff; }
+
+/* Cảnh báo deadline (Màu vàng rực trên nền tối) */
 .deadline-warning {
-    background-color: #fff3cd !important;
+    border: 2px solid #ffcc00 !important;
+    background-color: rgba(255, 204, 0, 0.1) !important;
 }
 
-.deadline-warning .pending {
-    color: #b30018; 
-    font-weight: bold;
+/* =========================================
+   6. BADGES ƯU TIÊN
+========================================= */
+.priority-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+.priority-high { background: #ff416c; color: white; }
+.priority-medium { background: #f7971e; color: white; }
+.priority-low { background: #38ef7d; color: #1a2e1f; }
 
-#left-helper-container {
+/* =========================================
+   7. HELPER AVATARS (FIXED POSITION)
+========================================= */
+#left-helper-container, #right-helper-container {
     position: fixed;
     top: 50%;
-    left: 20px;
-    transform: translateY(-50%); 
-    z-index: 10; 
+    transform: translateY(-50%);
+    z-index: 90;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+}
+
+#left-helper-container > *, #right-helper-container > * { pointer-events: auto; }
+
+#left-helper-container { left: 20px; align-items: flex-start; }
+#right-helper-container { right: 20px; align-items: flex-end; }
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.8);
+    box-shadow: 0 0 20px rgba(176, 106, 179, 0.6); /* Avatar phát sáng */
+    transition: transform 0.3s ease;
     cursor: pointer;
-    width: 240px; 
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
 }
+.profile-avatar:hover { transform: scale(1.1) rotate(5deg); }
 
-#left-helper-container .welcome-character {
-    width: 150px; 
-    height: 150px; 
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    margin-top: 15px; 
-    animation: wave-animation 2.5s infinite;
-    transform-origin: 70% 70%; 
-}
-
-#left-helper-container .profile-avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 5px solid #0dcaf0; 
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-}
-
-#left-helper-container .speech-bubble {
+.speech-bubble {
     position: relative;
-    background: #ffffff; 
-    border-radius: .8em; 
-    padding: 20px;
-    border: 2px solid #0dcaf0; 
-    font-style: italic;
-    color: #333;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    font-size: 1.1em;
-    text-align: left;
-    max-width: 250px; 
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    color: #333; /* Chữ trong bong bóng vẫn để màu tối cho dễ đọc */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    margin-bottom: 15px;
+    font-weight: 500;
 }
 
-#left-helper-container .speech-bubble:after {
-    content: '';
-    position: absolute;
-    bottom: -15px; 
-    left: 40px; 
-    width: 0;
-    height: 0;
-    border: 15px solid transparent;
-    border-top-color: #ffffff; 
-    border-bottom: 0;
+#left-helper-container .speech-bubble::after {
+    content: ''; position: absolute; bottom: -10px; left: 30px;
+    border-width: 10px 10px 0; border-style: solid; border-color: rgba(255, 255, 255, 0.95) transparent;
 }
 
-#right-helper-container {
-    position: fixed;
-    top: 50%; 
-    right: 20px;
-    transform: translateY(-50%); 
-    z-index: 10; 
-    width: 240px; 
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+#right-helper-container .speech-bubble::after {
+    content: ''; position: absolute; bottom: -10px; right: 30px;
+    border-width: 10px 10px 0; border-style: solid; border-color: rgba(255, 255, 255, 0.95) transparent;
 }
 
-#right-helper-container .welcome-character {
-    width: 150px; 
-    height: 150px; 
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px; 
-}
-
-#right-helper-container .profile-avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 5px solid #28a745; 
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-}
-
-#right-helper-container .speech-bubble {
-    position: relative;
-    background: #ffffff; 
-    border-radius: .8em; 
-    padding: 20px;
-    border: 2px solid #28a745; 
-    font-style: italic;
-    color: #333;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    font-size: 1.1em;
-    text-align: right; 
-    max-width: 250px; 
-}
-/* Đuôi bong bóng bên phải, chĩa LÊN TRÊN (vào avatar) */
-#right-helper-container .speech-bubble:after {
-    content: '';
-    position: absolute;
-    top: -15px; 
-    right: 40px; 
-    width: 0;
-    height: 0;
-    border: 15px solid transparent;
-    border-bottom-color: #ffffff; 
-    border-top: 0;
-}
-/* Định nghĩa hiệu ứng vẫy tay (dùng chung) */
+/* Animation Vẫy tay */
 @keyframes wave-animation {
-    0% { transform: rotate( 0.0deg) }
-    10% { transform: rotate(14.0deg) }
-    20% { transform: rotate(-8.0deg) }
-    30% { transform: rotate(14.0deg) }
-    40% { transform: rotate(-4.0deg) }
-    50% { transform: rotate(10.0deg) }
-    60% { transform: rotate( 0.0deg) }
-    100% { transform: rotate( 0.0deg) }
+    0%, 60%, 100% { transform: rotate(0.0deg); }
+    10%, 30% { transform: rotate(14.0deg); }
+    20%, 40% { transform: rotate(-8.0deg); }
+    50% { transform: rotate(10.0deg); }
 }
+.welcome-character { animation: wave-animation 3s infinite; transform-origin: 70% 70%; }
 
+/* =========================================
+   8. MEDIA QUERIES
+========================================= */
 @media (max-width: 1450px) {
-    #left-helper-container,
-    #right-helper-container {
-        display: none;
-    }
+    #left-helper-container, #right-helper-container { display: none !important; }
 }
 
 @media (max-width: 768px) {
-    body {
-        background-image: url('image/mobile_background.jpg'); 
-        background-attachment: scroll; 
-    }
-    .container {
-        margin-top: 20px;
-        padding: 15px;
-    }
+    .container { padding: 20px; margin-top: 20px; }
+    #todoForm { padding: 15px; }
+    h1 { font-size: 1.8rem; }
+    .custom-table tbody tr { margin-bottom: 10px; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }

@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App</title>
+    <title>Galaxy Todo App</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -25,12 +31,12 @@
 
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input class="form-control" type="text" placeholder="Title..." name="title" id="title"/>
+                <input class="form-control" type="text" placeholder="Nhập tên công việc..." name="title" id="title"/>
             </div> 
 
             <div class="mb-3">
                 <label for="description" class="description">Description</label>
-                <input class="form-control" type="text" placeholder="Description..." name="description" id="description"/>
+                <input class="form-control" type="text" placeholder="Mô tả chi tiết..." name="description" id="description"/>
             </div> 
 
             <div class="mb-3">
@@ -59,7 +65,7 @@
             </div>
         </form>
         
-        <div class="text-center mb-3">
+        <div class="text-center mb-4">
              <button id="toggleStatsBtn" class="btn btn-outline-success">
                 <i class='bx bx-pie-chart-alt-2'></i> Xem Thống Kê
             </button>
@@ -80,7 +86,7 @@
             </div>
         </div>
 
-        <hr>
+        <hr class="text-light opacity-25">
 
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
             <h3>Current Tasks</h3>
@@ -89,12 +95,12 @@
             </button>
         </div>
 
-        <div class="mb-3">
-            <input type="search" class="form-control" id="searchInput" placeholder="Type to search by title...">
+        <div class="mb-4">
+            <input type="search" class="form-control" id="searchInput" placeholder="Tìm kiếm công việc theo tên...">
         </div>
 
         <div class="table-responsive">
-            <table class="table table-bordered table-striped text-center">
+            <table class="table custom-table text-center align-middle">
                 <thead>
                     <tr>
                         <th>STT</th> 
@@ -105,7 +111,7 @@
                         <th>End Time</th>
                         <th>
                             <span>Action - </span>
-                            <button id="remove-all-btn" class="btn btn-danger">Remove All</button>
+                            <button id="remove-all-btn" class="btn btn-danger btn-sm">Remove All</button>
                         </th>
                     </tr>
                 </thead>
@@ -114,10 +120,10 @@
         </div>
 
         <div id="archiveSection" style="display: none;">
-            <hr>
+            <hr class="text-light opacity-25 mt-5">
             <h3>Archived Tasks</h3>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped text-center table-dark">
+                <table class="table custom-table text-center align-middle">
                     <thead>
                         <tr>
                             <th>STT</th> 
@@ -137,48 +143,119 @@
     </div>
 
     <div class="modal fade" id="introModal" tabindex="-1" aria-labelledby="introModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="introModalLabel">Hướng dẫn sử dụng</h5>
+                
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-primary" id="introModalLabel">
+                        <i class='bx bxs-planet'></i> Cẩm nang sử dụng Galaxy Todo
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <p>Đây là hướng dẫn nhanh để bạn bắt đầu:</p>
-                    <ul>
-                        <li><strong>Thêm việc:</strong> Điền đầy đủ thông tin vào biểu mẫu (form) và nhấn nút <strong>"Add"</strong>.</li>
-                        <li><strong>Hoàn thành việc:</strong> Nhấp trực tiếp vào <strong>Tiêu đề</strong> của công việc. Tiêu đề sẽ chuyển sang màu xanh lá (hoàn thành) hoặc đỏ (chưa xong).</li>
-                        <li><strong>Ưu tiên:</strong> Chọn mức độ ưu tiên (High, Medium, Low) để dễ dàng phân loại công việc.</li>
-                        <li><strong>Cảnh báo Deadline:</strong> Những công việc chưa hoàn thành và còn dưới 1 ngày là đến hạn sẽ được <strong>tô màu vàng</strong>.</li>
-                        <li><strong>Sửa/Xóa:</strong> Sử dụng các nút <strong>"Update"</strong> hoặc <strong>"Remove"</strong> ở cột "Action".</li>
-                        <li><strong>Lưu trữ (Archive):</strong> Khi một công việc đã hoàn thành (màu xanh), nút <strong>"Archive"</strong> sẽ xuất hiện. Nhấn vào đó để cất công việc vào kho.</li>
-                        <li><strong>Xem lại:</strong> Sử dụng các nút <strong>"Xem Thống Kê"</strong> và <strong>"View Archive"</strong> để xem biểu đồ tiến độ hoặc các công việc đã cất đi.</li>
+
+                <div class="modal-body px-4 pt-4">
+                    
+                    <div class="alert alert-primary d-flex align-items-center" role="alert">
+                        <i class='bx bxs-info-circle fs-4 me-2'></i>
+                        <div>
+                            Chào mừng bạn! Đây là công cụ giúp bạn quản lý công việc hiệu quả trên nền giao diện vũ trụ. Dưới đây là cách vận hành hệ thống.
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-dark border-bottom pb-2 mb-3 mt-4">
+                        <i class='bx bx-layer'></i> 1. Thao tác cốt lõi
+                    </h6>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded bg-light h-100">
+                                <strong class="text-primary"><i class='bx bx-plus'></i> Thêm công việc</strong>
+                                <p class="small text-muted mb-0 mt-1">
+                                    Điền <strong>Tiêu đề</strong> (bắt buộc) và mô tả. Chọn mức độ ưu tiên (Priority) và thời gian để hệ thống nhắc nhở bạn.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded bg-light h-100">
+                                <strong class="text-success"><i class='bx bx-check-double'></i> Hoàn thành</strong>
+                                <p class="small text-muted mb-0 mt-1">
+                                    Chạm trực tiếp vào <strong>Tiêu đề</strong> của công việc để đánh dấu là "Đã xong". Chạm lần nữa để quay lại trạng thái "Chưa xong".
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-dark border-bottom pb-2 mb-3 mt-4">
+                        <i class='bx bx-palette'></i> 2. Giải mã tín hiệu màu sắc
+                    </h6>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex align-items-center">
+                            <span class="badge bg-danger me-3">High</span>
+                            <span class="small text-muted">Màu đỏ: Công việc khẩn cấp, cần làm ngay.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <span class="badge bg-warning text-dark me-3">Medium</span>
+                            <span class="small text-muted">Màu vàng: Công việc quan trọng bình thường.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <span class="badge bg-info text-dark me-3">Low</span>
+                            <span class="small text-muted">Màu xanh: Công việc thong thả, làm khi rảnh.</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center bg-warning bg-opacity-10 border border-warning rounded mt-2">
+                            <i class='bx bxs-bell-ring text-warning me-3 fs-5'></i>
+                            <span class="small text-dark"><strong>Cảnh báo Deadline:</strong> Nếu công việc có viền phát sáng màu vàng, nghĩa là bạn còn chưa đầy 24h để hoàn thành nó!</span>
+                        </li>
                     </ul>
+
+                    <h6 class="fw-bold text-dark border-bottom pb-2 mb-3 mt-4">
+                        <i class='bx bx-grid-alt'></i> 3. Tính năng nâng cao
+                    </h6>
+                    
+                    <div class="mb-3">
+                        <strong><i class='bx bx-archive-in text-primary'></i> Archive (Lưu trữ) là gì?</strong>
+                        <p class="small text-muted">
+                            Khác với <strong>Xóa (Remove)</strong> là mất vĩnh viễn, <strong>Archive</strong> giúp bạn cất những việc đã làm xong vào "Kho lưu trữ". Bạn có thể xem lại chúng bất cứ lúc nào bằng nút "View Archive" để nhìn lại thành quả của mình.
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong><i class='bx bx-pie-chart-alt-2 text-success'></i> Thống kê (Statistics)</strong>
+                        <p class="small text-muted">
+                            Bấm nút "Xem Thống Kê" để hiển thị biểu đồ.
+                            <br>- <strong>Biểu đồ tròn:</strong> Tỷ lệ việc đã làm vs chưa làm.
+                            <br>- <strong>Biểu đồ cột:</strong> Số lượng công việc bạn đã hoàn thành trong 7 ngày qua.
+                        </p>
+                    </div>
+
+                    <div class="alert alert-warning mt-4" role="alert">
+                        <strong><i class='bx bx-error'></i> Lưu ý quan trọng:</strong>
+                        <span class="small">Vì sử dụng công nghệ SQL.js chạy trên RAM, dữ liệu <strong>sẽ biến mất khi bạn tải lại trang (F5)</strong>. Hãy chắc chắn bạn đã hoàn thành phiên làm việc của mình!</span>
+                    </div>
+
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tôi đã hiểu!</button>
+                
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">Đã hiểu, khởi động hệ thống! 🚀</button>
                 </div>
             </div>
         </div>
     </div>
 
-    
     <div id="left-helper-container" data-bs-toggle="modal" data-bs-target="#introModal">
         <div class="speech-bubble left-bubble">
-            Chào bạn, hãy ấn zô đây để xem hướng dẫn sử dụng nha. Phần mềm này mình ngẫu hứng làm ra nên có xảy ra lỗi thì mong bạn thông cảm nha!
+            <i class='bx bx-bulb'></i> Click vào đây để xem hướng dẫn sử dụng chi tiết nhé!
         </div>
         <div class="welcome-character">
             <img src="image/my_profile_avatar.png" alt="Nhân vật hướng dẫn" class="profile-avatar">
         </div>
     </div>
 
-    
     <div id="right-helper-container">
         <div class="welcome-character">
             <img src="image/my_profile_avatar_2.jpg" alt="Nhân vật chào mừng" class="profile-avatar">
         </div>
         <div class="speech-bubble right-bubble">
-            Chúc bạn 1 ngày tốt lành!
+            Chúc bạn một ngày làm việc hiệu quả và nhiều năng lượng! 🔥
         </div>
     </div>
 
