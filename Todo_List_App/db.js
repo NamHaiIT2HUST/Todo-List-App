@@ -1,6 +1,5 @@
 let db; 
 
-// 1. Khởi tạo Database
 export async function initDatabase() {
     try {
         const SQL = await initSqlJs({
@@ -32,7 +31,7 @@ export async function initDatabase() {
     }
 }
 
-// Helper: Chuyển đổi kết quả SQL thành Array Object
+//Chuyển đổi kết quả SQL thành Array Object
 function convertSqlResultsToObjects(sqlResult) {
     if (!sqlResult) return [];
     const { columns, values } = sqlResult;
@@ -45,7 +44,7 @@ function convertSqlResultsToObjects(sqlResult) {
     });
 }
 
-// 2. READ: Lấy TẤT CẢ task
+//Lấy tất cả các task
 export function getAllTasks() {
     try {
         const res = db.exec("SELECT * FROM tasks ORDER BY id DESC"); // Lấy mới nhất lên đầu
@@ -56,7 +55,7 @@ export function getAllTasks() {
     }
 }
 
-// 3. READ: Lấy MỘT task
+//Lấy MỘT task
 export function getTaskById(id) {
     try {
         const res = db.exec("SELECT * FROM tasks WHERE id = ?", [id]);
@@ -82,7 +81,7 @@ export function addTask(todoData) {
     ]);
 }
 
-// 5. UPDATE: Cập nhật thông tin task
+//Cập nhật thông tin task
 export function updateTask(id, todoData) {
     const query = `
         UPDATE tasks 
@@ -99,33 +98,32 @@ export function updateTask(id, todoData) {
     ]);
 }
 
-// 6. UPDATE: Đổi trạng thái (Hoàn thành / Chưa hoàn thành)
+//Đổi trạng thái (Hoàn thành / Chưa hoàn thành)
 export function toggleTaskStatus(id, newStatus, newCompletedAt) {
      const query = "UPDATE tasks SET status = ?, completedAt = ? WHERE id = ?";
      db.run(query, [newStatus, newCompletedAt, id]);
 }
 
-// 7. ARCHIVE: Chuyển vào kho lưu trữ
+//Chuyển vào kho lưu trữ
 export function archiveTask(id) {
     // Chỉ archive, giữ nguyên trạng thái status
     const query = "UPDATE tasks SET is_archived = 1 WHERE id = ?";
     db.run(query, [id]);
 }
 
-// 8. RESTORE: Khôi phục lại
+//Khôi phục lại
 export function restoreTask(id) {
-    // Chỉ bỏ archive, giữ nguyên trạng thái status (đã xong hay chưa)
     const query = "UPDATE tasks SET is_archived = 0 WHERE id = ?";
     db.run(query, [id]);
 }
 
-// 9. DELETE: Xóa vĩnh viễn 1 task
+//Xóa vĩnh viễn 1 task
 export function deleteTask(id) {
     const query = "DELETE FROM tasks WHERE id = ?";
     db.run(query, [id]);
 }
 
-// 10. DELETE ALL: Xóa tất cả task chưa archive
+//Xóa tất cả task chưa archive
 export function deleteAllCurrentTasks() {
     const query = "DELETE FROM tasks WHERE is_archived = 0";
     db.run(query);
