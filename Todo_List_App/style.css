@@ -1,17 +1,12 @@
-/* =========================================
-   1. CÀI ĐẶT CHUNG & MÀU SẮC GALAXY
-========================================= */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    /* Gradient tím hồng chủ đạo */
     --primary-gradient: linear-gradient(135deg, #b06ab3 0%, #4568dc 100%);
-    --accent-color: #d18ce0; /* Màu điểm nhấn sáng */
-    
-    /* Màu kính tối (Dark Glass) */
+    --accent-color: #d18ce0; 
+
     --glass-bg: rgba(20, 20, 35, 0.6); 
     --glass-border: 1px solid rgba(255, 255, 255, 0.15);
-    --glass-card-bg: rgba(255, 255, 255, 0.08); /* Màu nền thẻ bài */
+    --glass-card-bg: rgba(255, 255, 255, 0.08); 
     --input-bg: rgba(0, 0, 0, 0.3);
     
     --text-main: #ffffff;
@@ -22,21 +17,17 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    /* Nền vũ trụ tím thẫm */
     background: linear-gradient(120deg, #2b1055, #7597de);
     min-height: 100vh;
-    background-size: 200% 200%; /* Để tạo hiệu ứng chuyển động nếu muốn */
+    background-size: 200% 200%; 
     background-attachment: fixed;
     color: var(--text-main);
     padding-bottom: 50px;
 }
 
-/* =========================================
-   2. KHUNG CHÍNH (DARK GLASS CONTAINER)
-========================================= */
 .container {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px); /* Mờ mạnh hơn cho nền tối */
+    backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: var(--glass-border);
     box-shadow: var(--box-shadow);
@@ -55,22 +46,17 @@ body {
 
 h1, h3 {
     font-weight: 700;
-    /* Chữ phát sáng nhẹ */
     text-shadow: 0 0 10px rgba(176, 106, 179, 0.5); 
     color: #fff;
     margin-bottom: 20px;
 }
 
 h1 {
-    /* Gradient text nổi bật trên nền tối */
     background: linear-gradient(to right, #fff, #d18ce0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* =========================================
-   3. FORM & INPUTS (GIAO DIỆN TỐI)
-========================================= */
 #todoForm {
     padding: 30px;
     border: var(--glass-border);
@@ -91,12 +77,11 @@ label {
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 12px 15px;
     font-size: 14px;
-    background: var(--input-bg); /* Nền input tối */
-    color: #fff; /* Chữ trắng khi nhập */
+    background: var(--input-bg); 
+    color: #fff;
     transition: all 0.3s;
 }
 
-/* Placeholder màu xám nhạt */
 .form-control::placeholder { color: rgba(255, 255, 255, 0.4); }
 
 .form-control:focus, .form-select:focus {
@@ -106,14 +91,10 @@ label {
     color: #fff;
 }
 
-/* Icon lịch trong input date cũng phải chuyển sang trắng */
 input[type="datetime-local"] {
     color-scheme: dark;
 }
 
-/* =========================================
-   4. BUTTONS (NÚT NEON)
-========================================= */
 .btn {
     border-radius: 12px;
     padding: 10px 24px;
@@ -128,7 +109,7 @@ input[type="datetime-local"] {
 
 .btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(176, 106, 179, 0.6); /* Hiệu ứng phát sáng khi hover */
+    box-shadow: 0 0 20px rgba(176, 106, 179, 0.6); 
 }
 
 .btn-primary, #add-btn { 
@@ -144,7 +125,6 @@ input[type="datetime-local"] {
 .btn-sm { padding: 6px 12px; font-size: 11px; }
 .group-btn { text-align: center; margin-top: 20px; }
 
-/* Nút outline (Xem thống kê / Archive) */
 .btn-outline-primary, .btn-outline-success {
     border: 2px solid rgba(255,255,255,0.3) !important;
     color: #fff !important;
@@ -156,9 +136,6 @@ input[type="datetime-local"] {
     border-color: white !important;
 }
 
-/* =========================================
-   5. BẢNG DẠNG THẺ (CARD LIST)
-========================================= */
 .custom-table {
     border-spacing: 0 15px;
     width: 100%;
@@ -172,7 +149,6 @@ input[type="datetime-local"] {
     letter-spacing: 1px;
 }
 
-/* Thẻ công việc nền tối trong suốt */
 .custom-table tbody tr {
     background: var(--glass-card-bg);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -183,7 +159,7 @@ input[type="datetime-local"] {
 
 .custom-table tbody tr:hover {
     transform: scale(1.02);
-    background: rgba(255, 255, 255, 0.12); /* Sáng hơn chút khi hover */
+    background: rgba(255, 255, 255, 0.12);
     box-shadow: 0 0 15px rgba(118, 75, 162, 0.3);
 }
 
@@ -197,10 +173,8 @@ input[type="datetime-local"] {
 .custom-table tbody tr td:first-child { border-radius: 16px 0 0 16px; }
 .custom-table tbody tr td:last-child { border-radius: 0 16px 16px 0; }
 
-/* Text nhỏ (ngày tháng) */
 .text-muted { color: #8f8fbf !important; }
 
-/* Tiêu đề & Trạng thái */
 .task-title-wrapper {
     font-weight: 600;
     cursor: pointer;
@@ -211,7 +185,7 @@ input[type="datetime-local"] {
 .task-icon { font-size: 1.5rem; color: var(--accent-color); }
 
 .completed {
-    color: #00ff9d; /* Xanh neon */
+    color: #00ff9d;
     text-decoration: line-through;
     opacity: 0.6;
 }
@@ -219,15 +193,11 @@ input[type="datetime-local"] {
 
 .pending { color: #fff; }
 
-/* Cảnh báo deadline (Màu vàng rực trên nền tối) */
 .deadline-warning {
     border: 2px solid #ffcc00 !important;
     background-color: rgba(255, 204, 0, 0.1) !important;
 }
 
-/* =========================================
-   6. BADGES ƯU TIÊN
-========================================= */
 .priority-badge {
     padding: 5px 12px;
     border-radius: 20px;
@@ -239,9 +209,6 @@ input[type="datetime-local"] {
 .priority-medium { background: #f7971e; color: white; }
 .priority-low { background: #38ef7d; color: #1a2e1f; }
 
-/* =========================================
-   7. HELPER AVATARS (FIXED POSITION)
-========================================= */
 #left-helper-container, #right-helper-container {
     position: fixed;
     top: 50%;
@@ -264,7 +231,7 @@ input[type="datetime-local"] {
     object-fit: cover;
     border-radius: 50%;
     border: 3px solid rgba(255,255,255,0.8);
-    box-shadow: 0 0 20px rgba(176, 106, 179, 0.6); /* Avatar phát sáng */
+    box-shadow: 0 0 20px rgba(176, 106, 179, 0.6); 
     transition: transform 0.3s ease;
     cursor: pointer;
 }
@@ -276,7 +243,7 @@ input[type="datetime-local"] {
     padding: 15px 20px;
     border-radius: 12px;
     font-size: 0.9rem;
-    color: #333; /* Chữ trong bong bóng vẫn để màu tối cho dễ đọc */
+    color: #333; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     margin-bottom: 15px;
     font-weight: 500;
@@ -292,7 +259,6 @@ input[type="datetime-local"] {
     border-width: 10px 10px 0; border-style: solid; border-color: rgba(255, 255, 255, 0.95) transparent;
 }
 
-/* Animation Vẫy tay */
 @keyframes wave-animation {
     0%, 60%, 100% { transform: rotate(0.0deg); }
     10%, 30% { transform: rotate(14.0deg); }
@@ -301,9 +267,6 @@ input[type="datetime-local"] {
 }
 .welcome-character { animation: wave-animation 3s infinite; transform-origin: 70% 70%; }
 
-/* =========================================
-   8. MEDIA QUERIES
-========================================= */
 @media (max-width: 1450px) {
     #left-helper-container, #right-helper-container { display: none !important; }
 }
