@@ -42,12 +42,15 @@ body {
 }
 
 .container {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: rgba(255, 255, 255, 0.95); /* Tăng độ đậm nền để không bị lóa khi đè lên ảnh */
+    padding: 30px; /* Tăng padding chút cho đẹp */
+    border-radius: 15px; /* Bo tròn mềm mại hơn */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     margin-top: 40px; 
     margin-bottom: 40px;
+    position: relative; 
+    z-index: 100;       
+    max-width: 900px;  
 }
 
 @media (max-width: 768px) {
@@ -96,9 +99,9 @@ body {
     top: 50%;
     left: 20px;
     transform: translateY(-50%); 
-    z-index: 1040; 
+    z-index: 10; 
     cursor: pointer;
-    width: 280px; 
+    width: 240px; 
     display: flex;
     flex-direction: column;
     align-items: flex-start; 
@@ -155,8 +158,8 @@ body {
     top: 50%; 
     right: 20px;
     transform: translateY(-50%); 
-    z-index: 1040; 
-    width: 280px; 
+    z-index: 10; 
+    width: 240px; 
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -216,10 +219,21 @@ body {
     60% { transform: rotate( 0.0deg) }
     100% { transform: rotate( 0.0deg) }
 }
-/* Ẩn các helper khi màn hình nhỏ (để không che mất nội dung chính) */
-@media (max-width: 1200px) {
+
+@media (max-width: 1450px) {
     #left-helper-container,
     #right-helper-container {
         display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        background-image: url('image/mobile_background.jpg'); 
+        background-attachment: scroll; 
+    }
+    .container {
+        margin-top: 20px;
+        padding: 15px;
     }
 }
