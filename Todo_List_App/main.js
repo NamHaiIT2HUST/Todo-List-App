@@ -15,7 +15,6 @@ const tbody = document.getElementById("tbody");
 const archiveTbody = document.getElementById("archiveTbody");
 const searchInput = document.getElementById("searchInput");
 
-// Các phần hiển thị phụ
 const toggleArchiveBtn = document.getElementById("toggleArchiveBtn");
 const archiveSection = document.getElementById("archiveSection");
 const toggleStatsBtn = document.getElementById("toggleStatsBtn");
@@ -25,7 +24,6 @@ let overviewChartInstance = null;
 let dailyChartInstance = null; 
 let todoEditingId = null; 
 
-//Khởi chạy App
 async function main() {
     await db.initDatabase(); 
     await renderAll();      
