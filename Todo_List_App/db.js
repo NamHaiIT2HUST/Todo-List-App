@@ -9,7 +9,6 @@ export async function initDatabase() {
         db = new SQL.Database();
         console.log("Database initialized successfully!");
 
-        // Tạo bảng với đầy đủ trường dữ liệu
         const createTableQuery = `
             CREATE TABLE IF NOT EXISTS tasks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +30,6 @@ export async function initDatabase() {
     }
 }
 
-//Chuyển đổi kết quả SQL thành Array Object
 function convertSqlResultsToObjects(sqlResult) {
     if (!sqlResult) return [];
     const { columns, values } = sqlResult;
@@ -44,7 +42,6 @@ function convertSqlResultsToObjects(sqlResult) {
     });
 }
 
-//Lấy tất cả các task
 export function getAllTasks() {
     try {
         const res = db.exec("SELECT * FROM tasks ORDER BY id DESC"); // Lấy mới nhất lên đầu
@@ -55,7 +52,6 @@ export function getAllTasks() {
     }
 }
 
-//Lấy MỘT task
 export function getTaskById(id) {
     try {
         const res = db.exec("SELECT * FROM tasks WHERE id = ?", [id]);
@@ -66,7 +62,7 @@ export function getTaskById(id) {
     }
 }
 
-// 4. CREATE: Thêm task
+
 export function addTask(todoData) {
     const query = `
         INSERT INTO tasks (title, description, priority, startTime, endTime, status, is_archived) 
