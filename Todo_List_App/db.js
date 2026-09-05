@@ -1,4 +1,6 @@
-let db; 
+let db;
+
+const DB_STORAGE_KEY = 'galaxy-todo-db-v1';
 
 // 1. Khởi tạo Database
 export async function initDatabase() {
@@ -6,30 +8,88 @@ export async function initDatabase() {
         const SQL = await initSqlJs({
             locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}`
         });
-        
-        db = new SQL.Database();
-        console.log("Database initialized successfully!");
 
-        // Tạo bảng với đầy đủ trường dữ liệu
-        const createTableQuery = `
-            CREATE TABLE IF NOT EXISTS tasks (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title TEXT NOT NULL,
-                description TEXT,
-                priority TEXT DEFAULT 'medium',
-                startTime TEXT,
-                endTime TEXT,
-                status INTEGER DEFAULT 0,
-                completedAt TEXT,
-                is_archived INTEGER DEFAULT 0
-            );
-        `;
-        db.run(createTableQuery);
+        const savedBytes = loadSavedBytes();
+
+        if (savedBytes) {
+            try {
+                db = new SQL.Database(savedBytes);
+                // Kiểm tra nhanh dữ liệu khôi phục có hợp lệ không
+                db.exec("SELECT 1 FROM tasks LIMIT 1");
+                console.log("Database restored from localStorage.");
+            } catch (restoreErr) {
+                console.error("Dữ liệu lưu trữ bị hỏng, tạo database mới:", restoreErr);
+                db = new SQL.Database();
+                createSchema();
+            }
+        } else {
+            db = new SQL.Database();
+            createSchema();
+        }
+
+        console.log("Database initialized successfully!");
 
     } catch (err) {
         console.error("Failed to initialize database:", err);
-        alert("Lỗi khởi tạo Database! Hãy kiểm tra console.");
+        throw err;
     }
+}
+
+function createSchema() {
+    const createTableQuery = `
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            description TEXT,
+            priority TEXT DEFAULT 'medium',
+            startTime TEXT,
+            endTime TEXT,
+            status INTEGER DEFAULT 0,
+            completedAt TEXT,
+            is_archived INTEGER DEFAULT 0
+        );
+    `;
+    db.run(createTableQuery);
+}
+
+// --- Persistence helpers (localStorage) ---
+
+function loadSavedBytes() {
+    try {
+        const base64 = localStorage.getItem(DB_STORAGE_KEY);
+        if (!base64) return null;
+        return base64ToUint8Array(base64);
+    } catch (err) {
+        console.error("Không đọc được dữ liệu đã lưu:", err);
+        return null;
+    }
+}
+
+function persist() {
+    try {
+        const bytes = db.export();
+        localStorage.setItem(DB_STORAGE_KEY, uint8ArrayToBase64(bytes));
+    } catch (err) {
+        console.error("Không thể lưu database vào localStorage:", err);
+    }
+}
+
+function uint8ArrayToBase64(bytes) {
+    let binary = '';
+    const chunkSize = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+    }
+    return btoa(binary);
+}
+
+function base64ToUint8Array(base64) {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
 }
 
 // Helper: Chuyển đổi kết quả SQL thành Array Object
@@ -52,6 +112,7 @@ export function getAllTasks() {
         if (res.length === 0) return [];
         return convertSqlResultsToObjects(res[0]);
     } catch (err) {
+        console.error("Lỗi khi lấy danh sách task:", err);
         return [];
     }
 }
@@ -63,6 +124,7 @@ export function getTaskById(id) {
         if (res.length === 0) return null;
         return convertSqlResultsToObjects(res[0])[0];
     } catch (err) {
+        console.error("Lỗi khi lấy task theo id:", err);
         return null;
     }
 }
@@ -70,39 +132,42 @@ export function getTaskById(id) {
 // 4. CREATE: Thêm task
 export function addTask(todoData) {
     const query = `
-        INSERT INTO tasks (title, description, priority, startTime, endTime, status, is_archived) 
+        INSERT INTO tasks (title, description, priority, startTime, endTime, status, is_archived)
         VALUES (?, ?, ?, ?, ?, 0, 0)
     `;
     db.run(query, [
-        todoData.title, 
-        todoData.description, 
-        todoData.priority, 
-        todoData.startTime, 
+        todoData.title,
+        todoData.description,
+        todoData.priority,
+        todoData.startTime,
         todoData.endTime
     ]);
+    persist();
 }
 
 // 5. UPDATE: Cập nhật thông tin task
 export function updateTask(id, todoData) {
     const query = `
-        UPDATE tasks 
+        UPDATE tasks
         SET title = ?, description = ?, priority = ?, startTime = ?, endTime = ?
         WHERE id = ?
     `;
     db.run(query, [
-        todoData.title, 
-        todoData.description, 
-        todoData.priority, 
-        todoData.startTime, 
-        todoData.endTime, 
+        todoData.title,
+        todoData.description,
+        todoData.priority,
+        todoData.startTime,
+        todoData.endTime,
         id
     ]);
+    persist();
 }
 
 // 6. UPDATE: Đổi trạng thái (Hoàn thành / Chưa hoàn thành)
 export function toggleTaskStatus(id, newStatus, newCompletedAt) {
      const query = "UPDATE tasks SET status = ?, completedAt = ? WHERE id = ?";
      db.run(query, [newStatus, newCompletedAt, id]);
+     persist();
 }
 
 // 7. ARCHIVE: Chuyển vào kho lưu trữ
@@ -110,6 +175,7 @@ export function archiveTask(id) {
     // Chỉ archive, giữ nguyên trạng thái status
     const query = "UPDATE tasks SET is_archived = 1 WHERE id = ?";
     db.run(query, [id]);
+    persist();
 }
 
 // 8. RESTORE: Khôi phục lại
@@ -117,16 +183,19 @@ export function restoreTask(id) {
     // Chỉ bỏ archive, giữ nguyên trạng thái status (đã xong hay chưa)
     const query = "UPDATE tasks SET is_archived = 0 WHERE id = ?";
     db.run(query, [id]);
+    persist();
 }
 
 // 9. DELETE: Xóa vĩnh viễn 1 task
 export function deleteTask(id) {
     const query = "DELETE FROM tasks WHERE id = ?";
     db.run(query, [id]);
+    persist();
 }
 
 // 10. DELETE ALL: Xóa tất cả task chưa archive
 export function deleteAllCurrentTasks() {
     const query = "DELETE FROM tasks WHERE is_archived = 0";
     db.run(query);
+    persist();
 }
