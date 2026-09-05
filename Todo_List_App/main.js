@@ -24,6 +24,7 @@ const statisticsSection = document.getElementById("statisticsSection");
 
 const appLoadingOverlay = document.getElementById("appLoadingOverlay");
 const toastContainer = document.getElementById("toastContainer");
+const installAppBtn = document.getElementById("installAppBtn");
 
 // Biến toàn cục
 let overviewChartInstance = null;
@@ -505,6 +506,37 @@ function showToast(message, type = 'success') {
         toastEl.addEventListener('transitionend', () => toastEl.remove(), { once: true });
     }, 3200);
 }
+
+// 11.5 PWA: Service Worker + nút Cài đặt ứng dụng
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .catch((err) => console.error('Đăng ký Service Worker thất bại:', err));
+    });
+}
+
+let deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    if (installAppBtn) installAppBtn.style.display = 'inline-flex';
+});
+
+installAppBtn?.addEventListener('click', async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    const choice = await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    installAppBtn.style.display = 'none';
+    if (choice.outcome === 'accepted') {
+        showToast('Đã cài đặt Galaxy Todo!', 'success');
+    }
+});
+
+window.addEventListener('appinstalled', () => {
+    if (installAppBtn) installAppBtn.style.display = 'none';
+});
 
 // 11. Confirm Modal (thay cho confirm())
 function confirmAction(message) {
